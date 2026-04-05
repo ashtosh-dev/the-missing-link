@@ -18,7 +18,8 @@ Each article takes a topic directly from the college syllabus and maps every for
 | # | Article | Topics Covered | Status |
 |---|---|---|---|
 | 1 | [Your Stats Professor Is Teaching You Machine Learning. They Just Forgot to Mention It.](https://medium.com/@ashtosh.shenoy) | Correlation, Lines of Regression, r, sklearn bridge | ✅ Published |
-| 2 | When a Straight Line Lies: The Curve Fitting Chapter Nobody Explains | Curve Fitting, Normal Equations, Cost Function, Gradient Descent, Underfitting, Overfitting, R² | 🔜 Coming Soon |
+| 2A | [When a Straight Line Lies: The Curve Fitting Chapter Nobody Explains](https://medium.com/@ashtosh.shenoy/when-a-straight-line-lies-the-curve-fitting-chapter-nobody-explains-93abcb329c6a) | Curve Fitting (3 types), Normal Equations, Cost Function, Log Trick, Manual vs sklearn | ✅ Published |
+| 2B | Which Curve Do You Trust? | Underfitting, Overfitting, Generalisation, R², Train/Test Split, Gradient Descent, Industry Gap | 🔜 Coming Soon |
 | 3 | The Missing Link — Linear Mappings and Matrices | Linear Transformations, Matrix Representation, Change of Basis, PCA | 🔜 Coming Soon |
 | 4 | The Missing Link — Inner Product Spaces | Inner Product, Orthogonality, Gram-Schmidt, QR Factorization | 🔜 Coming Soon |
 | 5 | The Missing Link — SVD | Singular Value Decomposition, Dimensionality Reduction | 🔜 Coming Soon |
@@ -40,14 +41,14 @@ the-missing-link/
 │   │   └── fig04_straight_line_fail.png   # Straight line predicting above 100
 │   └── 00regression_visualization.py      # Generates all Article 1 figures
 │
-├── article-02-curve-fitting/
+├── article-02-curve-fitting/              # Code shared across Articles 2A and 2B
 │   ├── Visuals/
-│   │   ├── fig0_straight_line_fail.png    # Straight line breaks on curved data
+│   │   ├── fig0_straight_line_fail.png    # Hook: straight line breaks on curved data
 │   │   ├── fig1_three_types.png           # All 3 curve types on same data
 │   │   ├── fig2_overfit_underfit.png      # Underfitting vs just right vs overfitting
 │   │   ├── fig3_bias_variance.png         # Train R² vs Test R² across degrees
 │   │   └── fig4_manual_vs_sklearn.png     # Manual table vs sklearn: identical
-│   ├── curve_fitting_examples.py          # All teaching code from article, runnable
+│   ├── curve_fitting_examples.py          # All teaching code from 2A and 2B, runnable
 │   ├── curve_fitting_visualization.py     # Generates fig1–fig4
 │   └── fig0_straight_line_fail.py         # Generates fig0
 │
@@ -93,9 +94,9 @@ Figures saved to Visuals/
 
 ---
 
-### Article 2 — Curve Fitting
+### Articles 2A & 2B — Curve Fitting
 
-**Teaching code** — follow along with the article, see all manual vs sklearn comparisons:
+**Teaching code** — follow along with both articles, all manual vs sklearn comparisons:
 
 ```bash
 cd article-02-curve-fitting
@@ -104,16 +105,16 @@ python curve_fitting_examples.py
 
 **Expected output (excerpt):**
 ```
-Type 1 (manual):  y = 6.5758x + 38.3333
-Type 1 (sklearn): y = 6.5758x + 38.3333
+Type 1 (manual):  y = 6.3455x + 28.5273
+Type 1 (sklearn): y = 6.3455x + 28.5273
 → Identical: True
 
-Type 2 (manual):  y = 36.0142 · x^0.4519
-Type 2 (sklearn): y = 36.0142 · x^0.4519
+Type 2 (manual):  y = 32.1874 · x^0.5312
+Type 2 (sklearn): y = 32.1874 · x^0.5312
 → Identical: True
 
-Type 3 (manual):  y = -0.8068x² + 15.4508x + 20.5833
-Type 3 (sklearn): y = -0.8068x² + 15.4508x + 20.5833
+Type 3 (manual):  y = -0.8182x² + 14.2727x + 21.9091
+Type 3 (sklearn): y = -0.8182x² + 14.2727x + 21.9091
 → Identical: True
 
 Degree 1: Train R²=0.8971  Test R²=0.9456  underfit
@@ -123,7 +124,7 @@ Degree 9: Train R²=1.0000  Test R²=0.6658  completely overfit
 → Same destination. Different journey.
 ```
 
-**Visualizations** — generate all article figures:
+**Visualizations** — generate all figures:
 
 ```bash
 python curve_fitting_visualization.py  # fig1 to fig4
