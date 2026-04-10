@@ -19,7 +19,7 @@ Each article takes a topic directly from the college syllabus and maps every for
 |---|---|---|---|
 | 1 | [Your Stats Professor Is Teaching You Machine Learning. They Just Forgot to Mention It.](https://medium.com/@ashtosh.shenoy) | Correlation, Lines of Regression, r, sklearn bridge | ✅ Published |
 | 2A | [When a Straight Line Lies: The Curve Fitting Chapter Nobody Explains](https://medium.com/@ashtosh.shenoy/when-a-straight-line-lies-the-curve-fitting-chapter-nobody-explains-93abcb329c6a) | Curve Fitting (3 types), Normal Equations, Cost Function, Log Trick, Manual vs sklearn | ✅ Published |
-| 2B | Which Curve Do You Trust? | Underfitting, Overfitting, Generalisation, R², Train/Test Split, Gradient Descent, Industry Gap | 🔜 Coming Soon |
+| 2B | [Which Curve Do You Trust? The Part of Curve Fitting Nobody Teaches](https://medium.com/@ashtosh.shenoy/which-curve-do-you-trust-the-part-of-curve-fitting-nobody-teaches-d0c211703707) | Underfitting, Overfitting, Generalisation, R², Train/Test Split, Gradient Descent, Industry Gap | ✅ Published |
 | 3 | The Missing Link — Linear Mappings and Matrices | Linear Transformations, Matrix Representation, Change of Basis, PCA | 🔜 Coming Soon |
 | 4 | The Missing Link — Inner Product Spaces | Inner Product, Orthogonality, Gram-Schmidt, QR Factorization | 🔜 Coming Soon |
 | 5 | The Missing Link — SVD | Singular Value Decomposition, Dimensionality Reduction | 🔜 Coming Soon |
