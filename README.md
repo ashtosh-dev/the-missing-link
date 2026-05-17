@@ -19,8 +19,9 @@ Each article takes a topic directly from the college syllabus and maps every for
 |---|---|---|---|
 | 1 | [Your Stats Professor Is Teaching You Machine Learning. They Just Forgot to Mention It.](https://medium.com/@ashtosh.shenoy) | Correlation, Lines of Regression, r, sklearn bridge | ✅ Published |
 | 2A | [When a Straight Line Lies: The Curve Fitting Chapter Nobody Explains](https://medium.com/@ashtosh.shenoy/when-a-straight-line-lies-the-curve-fitting-chapter-nobody-explains-93abcb329c6a) | Curve Fitting (3 types), Normal Equations, Cost Function, Log Trick, Manual vs sklearn | ✅ Published |
-| 2B | [Which Curve Do You Trust? The Part of Curve Fitting Nobody Teaches](https://medium.com/@ashtosh.shenoy/which-curve-do-you-trust-the-part-of-curve-fitting-nobody-teaches-d0c211703707) | Underfitting, Overfitting, Generalisation, R², Train/Test Split, Gradient Descent, Industry Gap | ✅ Published |
-| 3 | The Missing Link — Linear Mappings and Matrices | Linear Transformations, Matrix Representation, Change of Basis, PCA | 🔜 Coming Soon |
+| 2B | [Which Curve Do You Trust? The Part of Curve Fitting Nobody Teaches](https://medium.com/@ashtosh.shenoy/which-curve-do-you-trust-the-part-of-curve-fitting-nobody-teaches-d0c211703707) | Underfitting, Overfitting, R², Train/Test Split, Gradient Descent, Industry Gap | ✅ Published |
+| 3A | [Your AIML Class Is Teaching You Neural Networks. Nobody Mentioned It.](https://medium.com/@ashtosh.shenoy/bf0a07e1861d) | Linear Transformations, Matrix Representation [T]_S, ML connection | ✅ Published |
+| 3B | Same Data. Different Coordinates. | Change of Basis, Similarity, PCA, DCT | 🔜 Coming Soon |
 | 4 | The Missing Link — Inner Product Spaces | Inner Product, Orthogonality, Gram-Schmidt, QR Factorization | 🔜 Coming Soon |
 | 5 | The Missing Link — SVD | Singular Value Decomposition, Dimensionality Reduction | 🔜 Coming Soon |
 | 6 | The Missing Link — Probability Distributions | Binomial, Normal, Confidence Scores in ML | 🔜 Coming Soon |
@@ -33,102 +34,24 @@ Each article takes a topic directly from the college syllabus and maps every for
 ```
 the-missing-link/
 │
-├── article-01-regression/
-│   ├── Visuals/
-│   │   ├── fig00_regression_lines.png     # Two regression lines + r gauge
-│   │   ├── fig01_angle_proof.png          # Angle between lines = visual proof of r
-│   │   ├── fig02_sklearn_vs_manual.png    # sklearn vs manual: identical result
-│   │   └── fig04_straight_line_fail.png   # Straight line predicting above 100
-│   └── 00regression_visualization.py      # Generates all Article 1 figures
-│
-├── article-02-curve-fitting/              # Code shared across Articles 2A and 2B
-│   ├── Visuals/
-│   │   ├── fig0_straight_line_fail.png    # Hook: straight line breaks on curved data
-│   │   ├── fig1_three_types.png           # All 3 curve types on same data
-│   │   ├── fig2_overfit_underfit.png      # Underfitting vs just right vs overfitting
-│   │   ├── fig3_bias_variance.png         # Train R² vs Test R² across degrees
-│   │   └── fig4_manual_vs_sklearn.png     # Manual table vs sklearn: identical
-│   ├── curve_fitting_examples.py          # All teaching code from 2A and 2B, runnable
-│   ├── curve_fitting_visualization.py     # Generates fig1–fig4
-│   └── fig0_straight_line_fail.py         # Generates fig0
+├── article-01-regression/          # Article 1 — see README inside
+├── article-02-curve-fitting/       # Articles 2A & 2B — see README inside
+├── article-03-linear-mappings/     # Articles 3A & 3B — see README inside
 │
 ├── requirements.txt
 └── README.md
 ```
 
+Each article directory contains its own README with full file descriptions, run instructions, and expected output.
+
 ---
 
 ## 🚀 Setup
 
-### 1. Clone the Repository
-
 ```bash
 git clone https://github.com/ashtosh-dev/the-missing-link
 cd the-missing-link
-```
-
-### 2. Install Dependencies
-
-```bash
 pip install -r requirements.txt
-```
-
----
-
-## ▶️ Running the Code
-
-### Article 1 — Regression
-
-```bash
-cd article-01-regression
-python 00regression_visualization.py
-```
-
-**Expected output:**
-```
-Manual →  r = 0.9286,  y = 0.9286x + 7.2857
-sklearn → y = 0.9286x + 7.2857
-
-Figures saved to Visuals/
-```
-
----
-
-### Articles 2A & 2B — Curve Fitting
-
-**Teaching code** — follow along with both articles, all manual vs sklearn comparisons:
-
-```bash
-cd article-02-curve-fitting
-python curve_fitting_examples.py
-```
-
-**Expected output (excerpt):**
-```
-Type 1 (manual):  y = 6.3455x + 28.5273
-Type 1 (sklearn): y = 6.3455x + 28.5273
-→ Identical: True
-
-Type 2 (manual):  y = 32.1874 · x^0.5312
-Type 2 (sklearn): y = 32.1874 · x^0.5312
-→ Identical: True
-
-Type 3 (manual):  y = -0.8182x² + 14.2727x + 21.9091
-Type 3 (sklearn): y = -0.8182x² + 14.2727x + 21.9091
-→ Identical: True
-
-Degree 1: Train R²=0.8971  Test R²=0.9456  underfit
-Degree 2: Train R²=0.9996  Test R²=0.9996  just right ✓
-Degree 9: Train R²=1.0000  Test R²=0.6658  completely overfit
-
-→ Same destination. Different journey.
-```
-
-**Visualizations** — generate all figures:
-
-```bash
-python curve_fitting_visualization.py  # fig1 to fig4
-python fig0_straight_line_fail.py      # fig0
 ```
 
 ---
@@ -144,18 +67,11 @@ python fig0_straight_line_fail.py      # fig0
 
 ---
 
-## 📚 Further Reading
-
-- [sklearn LinearRegression Documentation](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html)
-- [sklearn PolynomialFeatures Documentation](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.PolynomialFeatures.html)
-- [Pearson Correlation Coefficient — Wikipedia](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient)
-
----
-
 ## 🤝 Connect
 
 - 📝 Medium: [medium.com/@ashtosh.shenoy](https://medium.com/@ashtosh.shenoy)
 - 💼 LinkedIn: [linkedin.com/in/ashutosh-shenoy](https://www.linkedin.com/in/ashutosh-shenoy/)
+- 💻 GitHub: [github.com/ashtosh-dev](https://github.com/ashtosh-dev)
 
 ---
 
