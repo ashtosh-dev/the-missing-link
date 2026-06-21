@@ -21,7 +21,7 @@ Each article takes a topic directly from the college syllabus and maps every for
 | 2A | [When a Straight Line Lies: The Curve Fitting Chapter Nobody Explains](https://medium.com/@ashtosh.shenoy/when-a-straight-line-lies-the-curve-fitting-chapter-nobody-explains-93abcb329c6a) | Curve Fitting (3 types), Normal Equations, Cost Function, Log Trick, Manual vs sklearn | ✅ Published |
 | 2B | [Which Curve Do You Trust? The Part of Curve Fitting Nobody Teaches](https://medium.com/@ashtosh.shenoy/which-curve-do-you-trust-the-part-of-curve-fitting-nobody-teaches-d0c211703707) | Underfitting, Overfitting, R², Train/Test Split, Gradient Descent, Industry Gap | ✅ Published |
 | 3A | [Your AIML Class Is Teaching You Neural Networks. Nobody Mentioned It.](https://medium.com/@ashtosh.shenoy/bf0a07e1861d) | Linear Transformations, Matrix Representation [T]_S, ML connection | ✅ Published |
-| 3B | Same Data. Different Coordinates. | Change of Basis, Similarity, PCA, DCT | 🔜 Coming Soon |
+| 3B | [Same Data. Different Coordinates. This Is What PCA Actually Does.](https://medium.com/@ashtosh.shenoy/f04bede0f99c) | Change of Basis, Similarity, PCA, DCT, Iris dataset | ✅ Published |
 | 4 | The Missing Link — Inner Product Spaces | Inner Product, Orthogonality, Gram-Schmidt, QR Factorization | 🔜 Coming Soon |
 | 5 | The Missing Link — SVD | Singular Value Decomposition, Dimensionality Reduction | 🔜 Coming Soon |
 | 6 | The Missing Link — Probability Distributions | Binomial, Normal, Confidence Scores in ML | 🔜 Coming Soon |
@@ -71,7 +71,6 @@ pip install -r requirements.txt
 
 - 📝 Medium: [medium.com/@ashtosh.shenoy](https://medium.com/@ashtosh.shenoy)
 - 💼 LinkedIn: [linkedin.com/in/ashutosh-shenoy](https://www.linkedin.com/in/ashutosh-shenoy/)
-- 💻 GitHub: [github.com/ashtosh-dev](https://github.com/ashtosh-dev)
 
 ---
 
