@@ -1,121 +1,112 @@
-# Article 4A — The Math You Already Know Is Running Your RAG Pipeline
+# Article 04 — df.corr() · What It's Actually Computing
 
-**Inner products, norms, and orthogonality — and the measuring instrument you have been using since your first physics class without knowing it had a name**
+**Standalone article in The Missing Link series.**
 
-📝 [Read on Medium](https://medium.com/@ashtosh.shenoy/the-math-you-already-know-is-running-your-rag-pipeline-298eb4efa7a1)
+📝 [Read on Medium](https://medium.com/@ashtosh.shenoy/what-df-corr-is-actually-computing-10cbe1b90234)
 
 ---
 
 ## What This Article Covers
 
-The dot product appears in three places across your coursework and AIML stack — each time with different notation, different context, and no pointer back to the others:
+Most people run `df.corr()` as EDA decoration. This article opens the function and shows the exact linear algebra it executes — and follows that thread all the way to multicollinearity, Gram-Schmidt, QR factorization, eigen decomposition, SVD, and PCA.
 
-- **Linear algebra class** — the weights formula `cⱼ = (y·uⱼ) / (uⱼ·uⱼ)` for expanding vectors in an orthogonal basis
-- **ML libraries** — `cosine_similarity(u, v)` in every vector database and NLP pipeline
-- **Transformer attention** — `score(q, k) = qᵀk / √d`, the operation deciding which tokens attend to which
-
-All three are the same operation. This article draws that line explicitly — through the geometry, the code, and the RAG pipeline payoff.
-
-**Key concepts:** inner product, norm, unit vectors, orthogonality, orthogonal sets, orthonormal sets, scalar projection, weights formula, cosine similarity, scaled dot-product attention, pre-normalized embeddings, Inner Product (IP) distance.
+| Concept | What the article shows |
+|---------|----------------------|
+| `df.corr()` | Computes the cosine of the angle between every pair of mean-centered feature columns — a Gram matrix of cosines |
+| Dot product | `corr(x, y) = (x−x̄)ᵀ(y−ȳ) / (‖x−x̄‖·‖y−ȳ‖)` — verified manually against pandas output |
+| Orthogonality | Zero correlation = perpendicular vectors, not statistical independence |
+| Gram-Schmidt | Projecting out the "size effect" from `bedrooms` — creating `bedrooms_residual` with corr = 0.000000 |
+| Multicollinearity | Why corr > 0.999 causes `(XᵀX)⁻¹` to blow up — weight signs flip under 1% noise |
+| QR factorization | `Rw* = Qᵀy` solved by back-substitution — why `model.fit()` never inverts a matrix |
+| Eigen decomposition | `C = QΛQᵀ` on the correlation matrix — near-zero eigenvalues as the multicollinearity signal |
+| SVD | `X = UΣVᵀ` — why `σᵢ²/n = λᵢ` (StandardScaler uses ddof=0) |
+| PCA | Globally optimal orthogonal directions — not the same as Gram-Schmidt on existing columns |
 
 ---
 
-## File Structure
+## Files
 
 ```
-article-04-inner-products/
+article-04-df-corr/
 │
-├── inner_product_visualization.py   # All 6 figures — run this to generate everything
+├── df_corr.py                  # Main visualization script
+│   │                           # Generates all 8 figures in Visuals/
+│   └── run: python df_corr.py
 │
 ├── Visuals/
-│   ├── fig0_three_disguises.png         # Same dot product: weights formula, cosine sim, attention
-│   ├── fig1_weights_two_operations.png  # Geometric derivation of cⱼ in three panels
-│   ├── fig2_orthogonality.png           # Three cases: together, perpendicular, apart
-│   ├── fig3_cosine_bridge.png           # Physics formula → ML cosine_similarity
-│   ├── fig4_attention_connection.png    # Weights formula vs attention score + bar chart
-│   └── fig5_rag_pipeline.png            # Query vs document vectors, similarity ranking
+│   ├── fig0_heatmap.png                  # df.corr() output — house price dataset
+│   ├── fig1_three_angles.png             # cos(θ) = corr for 3 feature pairs
+│   ├── fig2_zero_corr_not_indep.png      # y = x² counterexample
+│   ├── fig3_weight_instability.png       # Multicollinearity catastrophe
+│   ├── fig4_gram_schmidt.png             # Projection + orthogonalization
+│   ├── fig5_eigenvalues.png              # Eigenvalue bar + cumulative variance
+│   ├── fig6_svd_vs_eigen.png             # Two paths, same eigenvalues
+│   └── fig7_conceptual_chain.png         # Full article arc
 │
-└── README.md
+└── README_article04.md         # This file
 ```
 
 ---
 
-## How to Run
+## Dataset
+
+Synthetic house price dataset — 200 samples, 6 features, 1 target. Same seed (`np.random.seed(42)`) used throughout.
+
+| Feature | Description | Notes |
+|---------|-------------|-------|
+| `size` | Floor area (sq ft) | Normally distributed |
+| `bedrooms` | Number of bedrooms | Derived from size — correlated |
+| `bathrooms` | Number of bathrooms | Derived from bedrooms — correlated |
+| `age` | Age of house (years) | Independent |
+| `distance` | Distance from city (km) | Independent |
+| `plot_area` | Plot area (sq ft) | Derived from size — correlated |
+| `price` | House price (₹) | Target |
+
+---
+
+## Run Instructions
 
 ```bash
-cd article-04-inner-products
-python inner_product_visualization.py
+cd article-04-df-corr
+mkdir -p Visuals
+python df_corr.py
 ```
 
-All 6 figures are saved to `Visuals/`. Expected terminal output:
+Expected output:
 
 ```
-Saved: Visuals/fig0_three_disguises.png
-[fig0] weights formula cj = 0.7000
-[fig0] cosine similarity  = 0.923077...
-[fig0] attention score    = 0.762...
+✓  fig0_heatmap.png
+✓  fig1_three_angles.png
+✓  fig2_zero_corr_not_indep.png
+✓  fig3_weight_instability.png
+✓  fig4_gram_schmidt.png
+✓  fig5_eigenvalues.png
+✓  fig6_svd_vs_eigen.png
+✓  fig7_conceptual_chain.png
 
-Saved: Visuals/fig1_weights_two_operations.png
-[fig1] scalar projection = 1.600000
-[fig1] c_j               = 0.800000
-[fig1] c_j * u           = [1.6 0. ]
-[fig1] y x-component     = 1.600000  (should match c_j*u[0] = 1.600000)
-
-Saved: Visuals/fig2_orthogonality.png
-[fig2] pair 1: u.v = 5.3600
-[fig2] pair 2: u.v = 0.0000
-[fig2] pair 3: u.v = -2.9600
-
-Saved: Visuals/fig3_cosine_bridge.png
-[fig3] dot(u,v)          = 6.320000
-[fig3] ||u|| * ||v||     = 6.735357
-[fig3] cosine_similarity = 0.938354
-[fig3] theta             = 20.2799 degrees
-
-Saved: Visuals/fig4_attention_connection.png
-[fig4] Attention scores (softmax) for query 'bank':
-  river     : 0.253417
-  money     : 0.206164
-  sat       : 0.186583
-  the       : 0.178372
-  on        : 0.175717
-
-Saved: Visuals/fig5_rag_pipeline.png
-[fig5] Cosine similarities:
-  Attention Mechanism                : 0.998294
-  Self-Attention                     : 0.991511
-  K-Means Clustering                 : 0.972839
-  Convolutional Nets                 : 0.903874
-  Decision Trees                     : 0.754508
-
-All 6 figures generated. Check Visuals/ directory.
+All 8 figures saved to Visuals/
 ```
 
 ---
 
-## Requirements
+## Key Technical Notes
+
+- **`StandardScaler` uses `ddof=0`** (population std). So `XᵀX/n = C` exactly, and `σᵢ²/n = λᵢ`. Using `n-1` here is wrong.
+- **`df.corr()` ≠ eigen decomposition.** `df.corr()` computes C. Eigen decomposition is a separate analysis applied to C.
+- **Zero correlation ≠ independence.** `y = x²` has corr = 0 with x but is a deterministic function of it.
+- **Gram-Schmidt ≠ PCA.** Gram-Schmidt orthogonalizes existing columns in an arbitrary order. PCA finds globally optimal new directions that maximize variance.
+- **QR solve: `Rw* = Qᵀy`**, not `w* = R⁻¹Qᵀy`. Back-substitution on an upper triangular system — no inverse computed.
+- **`fig3` uses a local demo pair** (`size_demo`, `plot_demo` with corr = 0.999998), not the global dataset. This keeps the global figures clean while demonstrating the catastrophic instability dramatically.
+
+---
+
+## Dependencies
+
+See `requirements.txt` in the root directory.
 
 ```
 numpy
+pandas
 matplotlib
+scikit-learn
 ```
-
-Both are included in the repo-level `requirements.txt`.
-
----
-
-## Key Concepts (Technical Notes)
-
-- **Cosine similarity = cosθ**: `u·v / (||u||·||v||)` is the physics formula `u·v = ||u||||v||cosθ` rearranged. Same expression, different context.
-- **Pre-normalized embeddings**: Production vector databases (Pinecone, Milvus, FAISS) normalize embeddings to unit length at index time. At query time, cosine similarity collapses to a plain dot product — which is why they default to Inner Product (IP) distance.
-- **Weights formula derivation**: `cⱼ = (y·uⱼ)/(uⱼ·uⱼ)` is the scalar coefficient from the geometric decomposition of y along uⱼ: (shadow length) × (unit direction), where shadow = `y·uⱼ/||uⱼ||` and direction = `uⱼ/||uⱼ||`.
-- **√d scaling in attention**: If q and k have components with mean 0 and variance 1, their dot product has variance d. Without dividing by √d, softmax inputs explode in high dimensions (d=768 for BERT), pushing gradients toward zero. Dividing by √d restores variance to 1.
-- **Orthogonality vs variance in PCA**: Orthogonality prevents redundancy between principal components. Eigenvalues (variance captured) determine which components are important. Both are necessary.
-
----
-
-## Part of The Missing Link Series
-
-| Previous | This Article | Next |
-|----------|-------------|------|
-| [3B — Same Data. Different Coordinates.](https://medium.com/@ashtosh.shenoy/f04bede0f99c) | **4A — The Math You Already Know Is Running Your RAG Pipeline** | 4B — Orthogonal Projection & Gram-Schmidt *(coming soon)* |
